@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { Box } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { Formik, useFormikContext } from 'formik';
 import React, { FC, useEffect } from 'react';
 import { QueryCondition, QueryOperation } from '../../utils/query';
@@ -31,11 +31,17 @@ const SimpleCondition: FC<SimpleConditionProps> = ({ onChange }) => {
   }, [field, op, value]);
 
   return (
-    <Box display="inline-flex" gridGap={1}>
-      <ConditionField />
-      <ConditionOperation />
-      <ConditionValue />
-    </Box>
+    <Grid container>
+      <Grid item>
+        <ConditionField />
+      </Grid>
+      <Grid item>
+        <ConditionOperation />
+      </Grid>
+      <Grid item>
+        <ConditionValue />
+      </Grid>
+    </Grid>
   );
 };
 
