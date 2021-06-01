@@ -1,4 +1,6 @@
-import '../src/styles/index.scss';
+import FIELDS from '../src/assets/data/fields';
+import QueryProvider from '../src/providers/QueryProvider';
+import '../src/styles/index.css';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -9,3 +11,11 @@ export const parameters = {
     },
   },
 };
+
+export const decorators = [
+  (Story) => (
+    <QueryProvider fields={FIELDS}>
+      <Story />
+    </QueryProvider>
+  ),
+];
