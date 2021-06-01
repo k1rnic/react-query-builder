@@ -1,27 +1,20 @@
 import { TextField } from '@material-ui/core';
 import { useField, useFormikContext } from 'formik';
 import React, { useEffect } from 'react';
-import { SimpleConditionFormData } from '.';
-import { QueryOperation } from '../../utils/query';
-
-type Props = {
-  value: QueryOperation;
-  onChange: (value: any) => void;
-};
+import { QueryCondition } from '../../utils/query';
 
 const Value = () => {
-  const [ctrl, , { setValue }] = useField('value');
-
+  const [ctrl, , { setValue }] = useField('2');
   const {
-    values: { field },
-    touched,
-  } = useFormikContext<SimpleConditionFormData>();
+    values: [conditionField],
+    touched: { '0': conditionFieldTouched },
+  } = useFormikContext<QueryCondition>();
 
   useEffect(() => {
-    if (touched.field) {
+    if (conditionFieldTouched) {
       setValue('');
     }
-  }, [field, touched.field]);
+  }, [conditionField, conditionFieldTouched]);
 
   return <TextField {...ctrl} />;
 };

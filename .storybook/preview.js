@@ -1,5 +1,3 @@
-import FIELDS from '../src/assets/data/fields';
-import QueryProvider from '../src/providers/QueryProvider';
 import '../src/styles/index.css';
 
 export const parameters = {
@@ -11,11 +9,3 @@ export const parameters = {
     },
   },
 };
-
-export const decorators = [
-  (Story) => (
-    <QueryProvider fields={FIELDS}>
-      <Story />
-    </QueryProvider>
-  ),
-];

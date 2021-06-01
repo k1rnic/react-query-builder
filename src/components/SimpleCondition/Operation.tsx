@@ -1,10 +1,9 @@
 import { MenuItem, TextField } from '@material-ui/core';
 import { useField, useFormikContext } from 'formik';
-import React, { useEffect, useState } from 'react';
-import { SimpleConditionFormData } from '.';
+import React, { useCallback, useEffect, useState } from 'react';
 import { QueryFieldType } from '../../interfaces/query-field';
 import { useQueryProvider } from '../../providers/QueryProvider';
-import { QueryOperation } from '../../utils/query';
+import { QueryCondition, QueryOperation } from '../../utils/query';
 
 type ConditionOperationDesc = {
   value: QueryOperation;
@@ -46,38 +45,38 @@ const DEFAULT_OPERATIONS: ConditionOperationDesc[] = [
   },
 ];
 
-type Props = {
-  value: any;
-  onChange: (value: any) => void;
-};
-
 const Operation = () => {
   const { fields } = useQueryProvider();
-
   const [operations, setOperations] = useState<ConditionOperationDesc[]>([]);
-  const [ctrl, , { setValue }] = useField('op');
+  const [ctrl, , { setValue }] = useField('1');
+
   const {
-    values: { field },
-    touched,
-  } = useFormikContext<SimpleConditionFormData>();
+    values: [conditionField],
+  } = useFormikContext<QueryCondition>();
+
+  const setOperationsByField = useCallback(
+    (fieldName: string) => {
+      const field = fields.find(({ dataField }) => dataField === fieldName);
+
+      if (field) {
+        const operationsByType = DEFAULT_OPERATIONS.filter(({ dataTypes }) =>
+          dataTypes.includes(field.dataType),
+        );
+
+        const currentSuitableOperation =
+          operationsByType.find(({ value }) => value === ctrl.value)?.value ||
+          operationsByType[0]?.value;
+
+        setOperations(operationsByType);
+        setValue(currentSuitableOperation);
+      }
+    },
+    [ctrl.value],
+  );
 
   useEffect(() => {
-    const currentField = fields.find(({ dataField }) => dataField === field);
-
-    if (currentField) {
-      setOperations(
-        DEFAULT_OPERATIONS.filter(({ dataTypes }) =>
-          dataTypes.includes(currentField.dataType),
-        ),
-      );
-    }
-  }, [field]);
-
-  useEffect(() => {
-    if (touched.field) {
-      setValue('');
-    }
-  }, [field, touched.field]);
+    setOperationsByField(conditionField);
+  }, [conditionField, setOperationsByField]);
 
   return (
     <TextField select {...ctrl}>

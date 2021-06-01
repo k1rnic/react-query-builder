@@ -1,5 +1,6 @@
 import { MenuItem, TextField } from '@material-ui/core';
-import React, { ChangeEvent } from 'react';
+import { useField } from 'formik';
+import React from 'react';
 import { QueryLogic } from '../../utils/query';
 
 type LogicDesc = {
@@ -12,20 +13,11 @@ const LOGIC_LIST: Array<LogicDesc> = [
   { value: QueryLogic.Or, label: 'or' },
 ];
 
-type Props = {
-  logic: QueryLogic;
-  onChange: (logic: QueryLogic) => void;
-};
-
-const Logic = ({ logic, onChange }: Props) => {
-  const handleChange = ({
-    target: { value },
-  }: ChangeEvent<HTMLInputElement>) => {
-    onChange(value as QueryLogic);
-  };
+const Logic = () => {
+  const [ctrl] = useField('logic');
 
   return (
-    <TextField select value={logic} onChange={handleChange}>
+    <TextField select {...ctrl}>
       {LOGIC_LIST.map((item) => (
         <MenuItem key={item.value} value={item.value}>
           {item.label}
