@@ -27,7 +27,7 @@ const SimpleCondition: FC<SimpleConditionProps> = ({ onChange }) => {
   }, [values, dirty]);
 
   return (
-    <Grid container>
+    <Grid container spacing={1}>
       <Grid item>
         <ConditionField />
       </Grid>

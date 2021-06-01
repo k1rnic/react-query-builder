@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box, List, ListItem } from '@material-ui/core';
 import { FieldArray, Formik, useFormikContext } from 'formik';
 import React, { FC, useEffect } from 'react';
 import { Query } from '../../utils/query';
@@ -19,25 +19,42 @@ const GroupCondition: FC<GroupConditionProps> = ({ onChange }) => {
   }, [values, dirty]);
 
   return (
-    <Box>
+    <Box
+      display="flex"
+      flexDirection="column"
+      gridGap={8}
+      alignItems="flex-start"
+    >
       <Logic />
-      <Box>
+      <List>
         <FieldArray name="conditions">
           {({ replace }) =>
-            values.conditions.map((condition, idx) =>
-              (condition as Query)?.logic ? (
-                <Formik key={idx} initialValues={condition} onSubmit={() => {}}>
-                  <GroupCondition onChange={(value) => replace(idx, value)} />
-                </Formik>
-              ) : (
-                <Formik key={idx} initialValues={condition} onSubmit={() => {}}>
-                  <SimpleCondition onChange={(value) => replace(idx, value)} />
-                </Formik>
-              ),
-            )
+            values.conditions.map((condition, idx) => (
+              <ListItem>
+                {(condition as Query)?.logic ? (
+                  <Formik
+                    key={idx}
+                    initialValues={condition}
+                    onSubmit={() => {}}
+                  >
+                    <GroupCondition onChange={(value) => replace(idx, value)} />
+                  </Formik>
+                ) : (
+                  <Formik
+                    key={idx}
+                    initialValues={condition}
+                    onSubmit={() => {}}
+                  >
+                    <SimpleCondition
+                      onChange={(value) => replace(idx, value)}
+                    />
+                  </Formik>
+                )}
+              </ListItem>
+            ))
           }
         </FieldArray>
-      </Box>
+      </List>
     </Box>
   );
 };
