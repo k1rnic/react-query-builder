@@ -46,9 +46,12 @@ const DEFAULT_OPERATIONS: ConditionOperationDesc[] = [
   },
 ];
 
-type Props = {};
+type Props = {
+  value: any;
+  onChange: (value: any) => void;
+};
 
-const Operation = (props: Props) => {
+const Operation = () => {
   const { fields } = useQueryProvider();
 
   const [operations, setOperations] = useState<ConditionOperationDesc[]>([]);

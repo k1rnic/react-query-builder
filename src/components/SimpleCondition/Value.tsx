@@ -2,6 +2,12 @@ import { TextField } from '@material-ui/core';
 import { useField, useFormikContext } from 'formik';
 import React, { useEffect } from 'react';
 import { SimpleConditionFormData } from '.';
+import { QueryOperation } from '../../utils/query';
+
+type Props = {
+  value: QueryOperation;
+  onChange: (value: any) => void;
+};
 
 const Value = () => {
   const [ctrl, , { setValue }] = useField('value');
