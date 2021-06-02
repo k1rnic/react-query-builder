@@ -28,30 +28,25 @@ const GroupCondition: FC<GroupConditionProps> = ({ onChange }) => {
       <Logic />
       <List>
         <FieldArray name="conditions">
-          {({ replace }) =>
-            values.conditions.map((condition, idx) => (
-              <ListItem>
-                {(condition as Query)?.logic ? (
-                  <Formik
-                    key={idx}
-                    initialValues={condition}
-                    onSubmit={() => {}}
-                  >
+          {({ replace, remove }) =>
+            values.conditions.map((condition, idx) =>
+              (condition as Query)?.logic ? (
+                <ListItem key={JSON.stringify(condition) + idx}>
+                  <Formik initialValues={condition} onSubmit={() => {}}>
                     <GroupCondition onChange={(value) => replace(idx, value)} />
                   </Formik>
-                ) : (
-                  <Formik
-                    key={idx}
-                    initialValues={condition}
-                    onSubmit={() => {}}
-                  >
+                </ListItem>
+              ) : (
+                <ListItem key={JSON.stringify(condition) + idx}>
+                  <Formik initialValues={condition} onSubmit={() => {}}>
                     <SimpleCondition
                       onChange={(value) => replace(idx, value)}
+                      onRemove={() => remove(idx)}
                     />
                   </Formik>
-                )}
-              </ListItem>
-            ))
+                </ListItem>
+              ),
+            )
           }
         </FieldArray>
       </List>

@@ -1,5 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { Grid } from '@material-ui/core';
+import { Grid, IconButton } from '@material-ui/core';
+import { Close } from '@material-ui/icons';
 import { useFormikContext } from 'formik';
 import React, { FC, useEffect } from 'react';
 import { QueryCondition } from '../../utils/query';
@@ -7,17 +8,12 @@ import ConditionField from './Field';
 import ConditionOperation from './Operation';
 import ConditionValue from './Value';
 
-export type SimpleConditionFormData = {
-  field: QueryCondition[0];
-  op: QueryCondition[1];
-  value: QueryCondition[2];
-};
-
 export type SimpleConditionProps = {
   onChange: (condition: QueryCondition) => void;
+  onRemove: () => void;
 };
 
-const SimpleCondition: FC<SimpleConditionProps> = ({ onChange }) => {
+const SimpleCondition: FC<SimpleConditionProps> = ({ onChange, onRemove }) => {
   const { values, dirty } = useFormikContext<QueryCondition>();
 
   useEffect(() => {
@@ -36,6 +32,11 @@ const SimpleCondition: FC<SimpleConditionProps> = ({ onChange }) => {
       </Grid>
       <Grid item>
         <ConditionValue />
+      </Grid>
+      <Grid item>
+        <IconButton onClick={onRemove} size="small">
+          <Close />
+        </IconButton>
       </Grid>
     </Grid>
   );

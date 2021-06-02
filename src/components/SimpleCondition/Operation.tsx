@@ -47,7 +47,9 @@ const DEFAULT_OPERATIONS: ConditionOperationDesc[] = [
 
 const Operation = () => {
   const { fields } = useQueryProvider();
-  const [operations, setOperations] = useState<ConditionOperationDesc[]>([]);
+  const [operations, setOperations] = useState<ConditionOperationDesc[]>(
+    DEFAULT_OPERATIONS,
+  );
   const [ctrl, , { setValue }] = useField('1');
 
   const {
