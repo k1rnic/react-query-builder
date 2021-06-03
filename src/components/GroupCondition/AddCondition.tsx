@@ -1,5 +1,5 @@
 import React from 'react';
-import DropdownMenu from '../DropdownMenu';
+import Dropdown from '../Dropdown';
 
 const OPTION_LIST: Array<{ value: 'condition' | 'group'; label: string }> = [
   { value: 'condition', label: 'Add condition' },
@@ -24,10 +24,10 @@ const AddCondition = ({ onConditionAdd, onConditionGroupAdd }: Props) => {
   };
 
   return (
-    <DropdownMenu
-      label="+"
+    <Dropdown
       items={OPTION_LIST}
       valueExpr="value"
+      valueFormatter={() => '+'}
       itemFormatter={({ label }) => label}
       onSelect={handleChange}
     />
