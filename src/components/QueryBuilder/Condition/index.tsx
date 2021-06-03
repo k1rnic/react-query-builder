@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { Grid, IconButton } from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import React, { FC, useState } from 'react';
 import useChangeEffect from '../../../hooks/useChangeEffect';
@@ -16,6 +16,7 @@ export type ConditionProps = {
 };
 
 const Condition: FC<ConditionProps> = ({ condition, onChange, onRemove }) => {
+  const classes = useStyles();
   const [field, setField] = useState(condition[0]);
   const [op, setOp] = useState(condition[1]);
   const [value, setValue] = useState(condition[2]);
@@ -27,7 +28,7 @@ const Condition: FC<ConditionProps> = ({ condition, onChange, onRemove }) => {
   }, [field, op, debouncedValue]);
 
   return (
-    <Grid container spacing={1} alignItems="center">
+    <Grid container className={classes.root} alignItems="center">
       <Grid item>
         <ConditionField value={field} onChange={setField} />
       </Grid>
@@ -37,13 +38,29 @@ const Condition: FC<ConditionProps> = ({ condition, onChange, onRemove }) => {
       <Grid item>
         <ConditionValue value={value} onChange={setValue} />
       </Grid>
-      <Grid item>
-        <IconButton onClick={onRemove} size="small">
-          <Close />
-        </IconButton>
+      <Grid item className={classes.removeWrap} onClick={onRemove}>
+        <Close fontSize="small" />
       </Grid>
     </Grid>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& $removeWrap': {
+      opacity: 0,
+    },
+    '&:hover $removeWrap': {
+      opacity: 1,
+    },
+  },
+  removeWrap: {
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    color: '#F44336',
+  },
+}));
 
 export default Condition;

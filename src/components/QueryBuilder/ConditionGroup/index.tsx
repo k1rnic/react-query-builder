@@ -1,4 +1,4 @@
-import { Box, Grid, List, ListItem } from '@material-ui/core';
+import { Box, Grid, List, ListItem, makeStyles } from '@material-ui/core';
 import React, { FC, useState } from 'react';
 import useArrayKeys from '../../../hooks/useArrayKeys';
 import useChangeEffect from '../../../hooks/useChangeEffect';
@@ -27,6 +27,7 @@ const ConditionGroup: FC<ConditionGroupProps> = ({
   onChange,
   onRemove,
 }) => {
+  const classes = useStyles();
   const { fields } = useQueryProvider();
   const { getKey, updateKey } = useArrayKeys();
   const [group, setGroup] = useState(query);
@@ -91,18 +92,18 @@ const ConditionGroup: FC<ConditionGroupProps> = ({
       />
 
       <Box display="flex" flexDirection="column" alignItems="flex-start">
-        <Grid container alignItems="center">
+        <Grid container className={classes.groupControls} alignItems="center">
           <Grid item>
             <Logic value={group.logic} onChange={handleLogicChange} />
           </Grid>
-          <Grid item>
+          <Grid item className={classes.removeWrap}>
             <RemoveCondition hidden={root} onRemove={handleSelfRemove} />
           </Grid>
         </Grid>
 
-        <List>
+        <List className={classes.list}>
           {group.conditions.map((condition, idx) => (
-            <ListItem key={getKey(condition)}>
+            <ListItem key={getKey(condition)} className={classes.listItem}>
               {(condition as Query)?.logic ? (
                 <ConditionGroup
                   query={condition as Query}
@@ -123,5 +124,29 @@ const ConditionGroup: FC<ConditionGroupProps> = ({
     </Box>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  groupControls: {
+    '& $removeWrap': {
+      opacity: 0,
+    },
+    '&:hover $removeWrap': {
+      opacity: 1,
+    },
+  },
+  removeWrap: {
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    color: '#F44336',
+  },
+  list: {
+    padding: 0,
+  },
+  listItem: {
+    padding: 0,
+  },
+}));
 
 export default ConditionGroup;

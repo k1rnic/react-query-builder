@@ -9,14 +9,14 @@ const DropdownButton: FC<Props> = ({ children, onToggle }) => {
   const classes = useStyles();
 
   return (
-    <Button size="small" onClick={onToggle} className={classes.selected}>
+    <Button size="small" onClick={onToggle} className={classes.root}>
       {children}
     </Button>
   );
 };
 
 const useStyles = makeStyles((theme) => ({
-  selected: {
+  root: {
     height: 22,
     minWidth: 10,
     padding: theme.spacing(0, 1),

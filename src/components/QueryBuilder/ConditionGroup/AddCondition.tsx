@@ -1,3 +1,4 @@
+import { Box } from '@material-ui/core';
 import React from 'react';
 import Dropdown from '../../Dropdown';
 
@@ -24,13 +25,15 @@ const AddCondition = ({ onConditionAdd, onConditionGroupAdd }: Props) => {
   };
 
   return (
-    <Dropdown
-      items={OPTION_LIST}
-      valueExpr="value"
-      valueFormatter={() => '+'}
-      itemFormatter={({ label }) => label}
-      onSelect={handleChange}
-    />
+    <Box display="flex" flexDirection="column">
+      <Dropdown
+        items={OPTION_LIST}
+        valueExpr="value"
+        valueFormatter={() => '+'}
+        itemFormatter={({ label }) => label}
+        onSelect={handleChange}
+      />
+    </Box>
   );
 };
 
