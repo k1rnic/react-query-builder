@@ -1,9 +1,7 @@
 import { MenuItem, TextField } from '@material-ui/core';
-import { useField, useFormikContext } from 'formik';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { QueryFieldType } from '../../interfaces/query-field';
-import { useQueryProvider } from '../../providers/QueryProvider';
-import { QueryCondition, QueryOperation } from '../../utils/query';
+import { QueryOperation } from '../../utils/query';
 
 type ConditionOperationDesc = {
   value: QueryOperation;
@@ -45,43 +43,23 @@ const DEFAULT_OPERATIONS: ConditionOperationDesc[] = [
   },
 ];
 
-const Operation = () => {
-  const { fields } = useQueryProvider();
-  const [operations, setOperations] = useState<ConditionOperationDesc[]>(
-    DEFAULT_OPERATIONS,
-  );
-  const [ctrl, , { setValue }] = useField('1');
+type Props = {
+  value: QueryOperation;
+  // dataType: QueryFieldType;
+  onChange: (value: QueryOperation) => void;
+};
 
-  const {
-    values: [conditionField],
-  } = useFormikContext<QueryCondition>();
+const Operation = ({ value, onChange }: Props) => {
+  const [operations] = useState<ConditionOperationDesc[]>(DEFAULT_OPERATIONS);
 
-  const setOperationsByField = useCallback(
-    (fieldName: string) => {
-      const field = fields.find(({ dataField }) => dataField === fieldName);
-
-      if (field) {
-        const operationsByType = DEFAULT_OPERATIONS.filter(({ dataTypes }) =>
-          dataTypes.includes(field.dataType),
-        );
-
-        const currentSuitableOperation =
-          operationsByType.find(({ value }) => value === ctrl.value)?.value ||
-          operationsByType[0]?.value;
-
-        setOperations(operationsByType);
-        setValue(currentSuitableOperation);
-      }
-    },
-    [ctrl.value],
-  );
-
-  useEffect(() => {
-    setOperationsByField(conditionField);
-  }, [conditionField, setOperationsByField]);
+  const handleChange = ({
+    target: { value: changes },
+  }: ChangeEvent<HTMLInputElement>) => {
+    onChange(changes as QueryOperation);
+  };
 
   return (
-    <TextField select {...ctrl}>
+    <TextField select value={value} onChange={handleChange}>
       {operations.map((item) => (
         <MenuItem key={item.value} value={item.value}>
           {item.label || item.value}

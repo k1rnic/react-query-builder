@@ -7,10 +7,12 @@ import QueryProvider from '../../providers/QueryProvider';
 export default {
   title: 'Query/Condition/Group',
   component: Component,
-  args: {},
+  args: {
+    query: QUERY,
+  },
   decorators: [
     (Story) => (
-      <QueryProvider fields={FIELDS} query={QUERY}>
+      <QueryProvider fields={FIELDS}>
         <Story />
       </QueryProvider>
     ),

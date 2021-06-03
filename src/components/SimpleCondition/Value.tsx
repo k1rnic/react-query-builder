@@ -1,22 +1,19 @@
 import { TextField } from '@material-ui/core';
-import { useField, useFormikContext } from 'formik';
-import React, { useEffect } from 'react';
-import { QueryCondition } from '../../utils/query';
+import React, { ChangeEvent } from 'react';
 
-const Value = () => {
-  const [ctrl, , { setValue }] = useField('2');
-  const {
-    values: [conditionField],
-    touched: { '0': conditionFieldTouched },
-  } = useFormikContext<QueryCondition>();
+type Props = {
+  value: any;
+  onChange: (value: any) => void;
+};
 
-  useEffect(() => {
-    if (conditionFieldTouched) {
-      setValue('');
-    }
-  }, [conditionField, conditionFieldTouched]);
+const Value = ({ value, onChange }: Props) => {
+  const handleChange = ({
+    target: { value: changes },
+  }: ChangeEvent<HTMLInputElement>) => {
+    onChange(changes);
+  };
 
-  return <TextField {...ctrl} />;
+  return <TextField value={value} onChange={handleChange} />;
 };
 
 export default Value;

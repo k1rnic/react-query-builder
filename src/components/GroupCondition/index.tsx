@@ -1,33 +1,56 @@
 import { Box, Grid, IconButton, List, ListItem } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
-import { FieldArray, Formik, useFormikContext } from 'formik';
-import React, { FC, useEffect } from 'react';
-import { Query } from '../../utils/query';
+import React, { FC, useState } from 'react';
+import useChangeEffect from '../../hooks/useChangeEffect';
+import { Query, QueryCondition, QueryLogic } from '../../utils/query';
 import SimpleCondition from '../SimpleCondition';
 import Logic from './Logic';
 
 export type GroupConditionProps = {
   root?: boolean;
+  query: Query;
   onChange: (query: Query) => void;
-  onRemove: (query: Query) => void;
+  onRemove?: (query: Query) => void;
 };
 
 const GroupCondition: FC<GroupConditionProps> = ({
+  query,
   root = false,
   onChange,
   onRemove,
 }) => {
-  const { values, dirty } = useFormikContext<Query>();
+  const [group, setGroup] = useState(query);
 
-  const handleRemoveSelf = () => {
-    onRemove(values);
+  useChangeEffect(() => {
+    onChange(group);
+  }, [group]);
+
+  const handleLogicChange = (logic: QueryLogic) => {
+    setGroup((state) => ({ ...state, logic }));
   };
 
-  useEffect(() => {
-    if (dirty) {
-      onChange(values);
-    }
-  }, [values, dirty]);
+  const handleSelfRemove = () => {
+    onRemove?.(group);
+  };
+
+  const handleChildChange = (
+    targetIdx: number,
+    changes: Query | QueryCondition,
+  ) => {
+    setGroup((state) => ({
+      ...state,
+      conditions: state.conditions.map((condition, idx) =>
+        idx === targetIdx ? changes : condition,
+      ),
+    }));
+  };
+
+  const handleChildRemove = (targetIdx: number) => {
+    setGroup((state) => ({
+      ...state,
+      conditions: state.conditions.filter((_, idx) => idx !== targetIdx),
+    }));
+  };
 
   return (
     <Box
@@ -38,42 +61,34 @@ const GroupCondition: FC<GroupConditionProps> = ({
     >
       <Grid container>
         <Grid item>
-          <Logic />
+          <Logic value={group.logic} onChange={handleLogicChange} />
         </Grid>
         {!root && (
           <Grid item>
-            <IconButton onClick={handleRemoveSelf} size="small">
+            <IconButton onClick={handleSelfRemove} size="small">
               <Close />
             </IconButton>
           </Grid>
         )}
       </Grid>
       <List>
-        <FieldArray name="conditions">
-          {({ replace, remove }) =>
-            values.conditions.map((condition, idx) =>
-              (condition as Query)?.logic ? (
-                <ListItem key={idx}>
-                  <Formik initialValues={condition} onSubmit={() => {}}>
-                    <GroupCondition
-                      onChange={(value) => replace(idx, value)}
-                      onRemove={() => remove(idx)}
-                    />
-                  </Formik>
-                </ListItem>
-              ) : (
-                <ListItem key={idx}>
-                  <Formik initialValues={condition} onSubmit={() => {}}>
-                    <SimpleCondition
-                      onChange={(value) => replace(idx, value)}
-                      onRemove={() => remove(idx)}
-                    />
-                  </Formik>
-                </ListItem>
-              ),
-            )
-          }
-        </FieldArray>
+        {group.conditions.map((condition, idx) => (
+          <ListItem key={idx}>
+            {(condition as Query)?.logic ? (
+              <GroupCondition
+                query={condition as Query}
+                onChange={(changes) => handleChildChange(idx, changes)}
+                onRemove={() => handleChildRemove(idx)}
+              />
+            ) : (
+              <SimpleCondition
+                condition={condition as QueryCondition}
+                onChange={(changes) => handleChildChange(idx, changes)}
+                onRemove={() => handleChildRemove(idx)}
+              />
+            )}
+          </ListItem>
+        ))}
       </List>
     </Box>
   );
