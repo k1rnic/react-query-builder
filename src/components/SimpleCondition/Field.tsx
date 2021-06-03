@@ -1,6 +1,7 @@
-import { MenuItem, TextField } from '@material-ui/core';
-import React, { ChangeEvent } from 'react';
+import React from 'react';
+import { IQueryField } from '../../interfaces/query-field';
 import { useQueryProvider } from '../../providers/QueryProvider';
+import Dropdown from '../Dropdown';
 
 type Props = {
   value: string;
@@ -10,20 +11,19 @@ type Props = {
 const Field = ({ value, onChange }: Props) => {
   const { fields } = useQueryProvider();
 
-  const handleChange = ({
-    target: { value: changes },
-  }: ChangeEvent<HTMLInputElement>) => {
-    onChange(changes);
+  const handleChange = ({ dataField }: IQueryField) => {
+    onChange(dataField);
   };
 
   return (
-    <TextField select value={value} onChange={handleChange}>
-      {fields.map((item) => (
-        <MenuItem key={item.dataField} value={item.dataField}>
-          {item.label || item.dataField}
-        </MenuItem>
-      ))}
-    </TextField>
+    <Dropdown
+      items={fields}
+      selected={value}
+      valueExpr="dataField"
+      itemFormatter={({ label }) => label}
+      valueFormatter={({ label }) => label}
+      onSelect={handleChange}
+    />
   );
 };
 

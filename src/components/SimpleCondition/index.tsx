@@ -30,7 +30,7 @@ const SimpleCondition: FC<SimpleConditionProps> = ({
   }, [fieldCtrl, opCtrl, valueCtrl]);
 
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={1} alignItems="center">
       <Grid item>
         <ConditionField value={fieldCtrl} onChange={setFieldCtrl} />
       </Grid>

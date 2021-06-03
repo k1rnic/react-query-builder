@@ -1,6 +1,6 @@
-import { MenuItem, TextField } from '@material-ui/core';
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { QueryLogic } from '../../utils/query';
+import Dropdown from '../Dropdown';
 
 type LogicDesc = {
   value: QueryLogic;
@@ -18,19 +18,18 @@ type Props = {
 };
 
 const Logic = ({ value, onChange }: Props) => {
-  const handleChange = ({
-    target: { value: changes },
-  }: ChangeEvent<HTMLInputElement>) => {
-    onChange(changes as QueryLogic);
+  const handleChange = ({ value: logic }: LogicDesc) => {
+    onChange(logic);
   };
   return (
-    <TextField select value={value} onChange={handleChange}>
-      {LOGIC_LIST.map((item) => (
-        <MenuItem key={item.value} value={item.value}>
-          {item.label}
-        </MenuItem>
-      ))}
-    </TextField>
+    <Dropdown
+      items={LOGIC_LIST}
+      selected={value}
+      valueExpr="value"
+      itemFormatter={({ label }) => label}
+      valueFormatter={({ label }) => label}
+      onSelect={handleChange}
+    />
   );
 };
 

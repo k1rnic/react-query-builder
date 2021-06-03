@@ -59,7 +59,7 @@ const GroupCondition: FC<GroupConditionProps> = ({
       gridGap={8}
       alignItems="flex-start"
     >
-      <Grid container>
+      <Grid container alignItems="center">
         <Grid item>
           <Logic value={group.logic} onChange={handleLogicChange} />
         </Grid>
