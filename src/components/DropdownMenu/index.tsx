@@ -1,25 +1,22 @@
 import { Menu, MenuItem, MenuProps } from '@material-ui/core';
-import React, { ReactText, useCallback, useState } from 'react';
-import useChangeEffect from '../../hooks/useChangeEffect';
+import React, { useCallback, useState } from 'react';
 import DropdownButton from '../DropdownButton';
 
-export type DropdownProps<T = string> = {
+export type DropdownMenuProps<T = string> = {
   items: T[];
-  selected?: T | ReactText;
+  label: string;
   valueExpr?: keyof T;
   itemFormatter?: (item: T) => any;
-  valueFormatter?: (item: T) => any;
   onSelect: (item: T) => void;
 };
 
 const Dropdown = <T,>({
   items,
-  selected,
+  label,
   valueExpr,
-  valueFormatter,
   itemFormatter,
   onSelect,
-}: DropdownProps<T>) => {
+}: DropdownMenuProps<T>) => {
   const [anchor, setAnchor] = useState<MenuProps['anchorEl']>(null);
 
   const getValueExpr = useCallback(
@@ -27,14 +24,8 @@ const Dropdown = <T,>({
     [],
   );
 
-  const [selectedItem, setSelectedItem] = useState<T>(
-    items.find(
-      (item) => getValueExpr(item) === getValueExpr(selected as T),
-    ) as T,
-  );
-
   const handleChange = (changes: T) => {
-    setSelectedItem(changes);
+    onSelect?.(changes);
     handleClose();
   };
 
@@ -46,22 +37,12 @@ const Dropdown = <T,>({
     setAnchor(null);
   };
 
-  useChangeEffect(() => {
-    onSelect(selectedItem);
-  }, [selectedItem]);
-
   return (
     <>
-      <DropdownButton onToggle={handleOpen}>
-        {valueFormatter?.(selectedItem) || getValueExpr(selectedItem)}
-      </DropdownButton>
+      <DropdownButton onToggle={handleOpen}>{label}</DropdownButton>
       <Menu keepMounted anchorEl={anchor} open={!!anchor} onClose={handleClose}>
         {items.map((item) => (
-          <MenuItem
-            key={getValueExpr(item)}
-            selected={getValueExpr(item) === getValueExpr(selectedItem)}
-            onClick={() => handleChange(item)}
-          >
+          <MenuItem key={getValueExpr(item)} onClick={() => handleChange(item)}>
             {itemFormatter?.(item) || getValueExpr(item)}
           </MenuItem>
         ))}

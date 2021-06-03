@@ -1,10 +1,17 @@
-import { Box, Grid, IconButton, List, ListItem } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { Box, Grid, List, ListItem } from '@material-ui/core';
 import React, { FC, useState } from 'react';
 import useChangeEffect from '../../hooks/useChangeEffect';
-import { Query, QueryCondition, QueryLogic } from '../../utils/query';
+import { useQueryProvider } from '../../providers/QueryProvider';
+import {
+  Query,
+  QueryCondition,
+  QueryLogic,
+  QueryOperation,
+} from '../../utils/query';
 import SimpleCondition from '../SimpleCondition';
+import AddCondition from './AddCondition';
 import Logic from './Logic';
+import RemoveCondition from './RemoveCondition';
 
 export type GroupConditionProps = {
   root?: boolean;
@@ -19,18 +26,31 @@ const GroupCondition: FC<GroupConditionProps> = ({
   onChange,
   onRemove,
 }) => {
+  const { fields } = useQueryProvider();
   const [group, setGroup] = useState(query);
 
-  useChangeEffect(() => {
-    onChange(group);
-  }, [group]);
+  const handleGroupAdd = () => {
+    setGroup((state) => ({
+      ...state,
+      conditions: [
+        ...state.conditions,
+        { logic: QueryLogic.And, conditions: [] },
+      ],
+    }));
+  };
+
+  const handleConditionAdd = () => {
+    setGroup((state) => ({
+      ...state,
+      conditions: [
+        ...state.conditions,
+        [fields[0]?.dataField, QueryOperation.Equal, ''],
+      ],
+    }));
+  };
 
   const handleLogicChange = (logic: QueryLogic) => {
     setGroup((state) => ({ ...state, logic }));
-  };
-
-  const handleSelfRemove = () => {
-    onRemove?.(group);
   };
 
   const handleChildChange = (
@@ -45,6 +65,10 @@ const GroupCondition: FC<GroupConditionProps> = ({
     }));
   };
 
+  const handleSelfRemove = () => {
+    onRemove?.(group);
+  };
+
   const handleChildRemove = (targetIdx: number) => {
     setGroup((state) => ({
       ...state,
@@ -52,44 +76,47 @@ const GroupCondition: FC<GroupConditionProps> = ({
     }));
   };
 
+  useChangeEffect(() => {
+    onChange(group);
+  }, [group]);
+
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      gridGap={8}
-      alignItems="flex-start"
-    >
-      <Grid container alignItems="center">
-        <Grid item>
-          <Logic value={group.logic} onChange={handleLogicChange} />
-        </Grid>
-        {!root && (
+    <Box display="flex">
+      <AddCondition
+        onConditionAdd={handleConditionAdd}
+        onConditionGroupAdd={handleGroupAdd}
+      />
+
+      <Box display="flex" flexDirection="column" alignItems="flex-start">
+        <Grid container alignItems="center">
           <Grid item>
-            <IconButton onClick={handleSelfRemove} size="small">
-              <Close />
-            </IconButton>
+            <Logic value={group.logic} onChange={handleLogicChange} />
           </Grid>
-        )}
-      </Grid>
-      <List>
-        {group.conditions.map((condition, idx) => (
-          <ListItem key={idx}>
-            {(condition as Query)?.logic ? (
-              <GroupCondition
-                query={condition as Query}
-                onChange={(changes) => handleChildChange(idx, changes)}
-                onRemove={() => handleChildRemove(idx)}
-              />
-            ) : (
-              <SimpleCondition
-                condition={condition as QueryCondition}
-                onChange={(changes) => handleChildChange(idx, changes)}
-                onRemove={() => handleChildRemove(idx)}
-              />
-            )}
-          </ListItem>
-        ))}
-      </List>
+          <Grid item>
+            <RemoveCondition hidden={root} onRemove={handleSelfRemove} />
+          </Grid>
+        </Grid>
+
+        <List>
+          {group.conditions.map((condition, idx) => (
+            <ListItem key={idx}>
+              {(condition as Query)?.logic ? (
+                <GroupCondition
+                  query={condition as Query}
+                  onChange={(changes) => handleChildChange(idx, changes)}
+                  onRemove={() => handleChildRemove(idx)}
+                />
+              ) : (
+                <SimpleCondition
+                  condition={condition as QueryCondition}
+                  onChange={(changes) => handleChildChange(idx, changes)}
+                  onRemove={() => handleChildRemove(idx)}
+                />
+              )}
+            </ListItem>
+          ))}
+        </List>
+      </Box>
     </Box>
   );
 };

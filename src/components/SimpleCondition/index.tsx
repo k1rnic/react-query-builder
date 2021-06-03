@@ -3,6 +3,7 @@ import { Grid, IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import React, { FC, useState } from 'react';
 import useChangeEffect from '../../hooks/useChangeEffect';
+import useDebounce from '../../hooks/useDebounce';
 import { QueryCondition } from '../../utils/query';
 import ConditionField from './Field';
 import ConditionOperation from './Operation';
@@ -19,26 +20,26 @@ const SimpleCondition: FC<SimpleConditionProps> = ({
   onChange,
   onRemove,
 }) => {
-  const [field, op, value] = condition;
+  const [field, setField] = useState(condition[0]);
+  const [op, setOp] = useState(condition[1]);
+  const [value, setValue] = useState(condition[2]);
 
-  const [fieldCtrl, setFieldCtrl] = useState(field);
-  const [opCtrl, setOpCtrl] = useState(op);
-  const [valueCtrl, setValueCtrl] = useState(value);
+  const debouncedValue = useDebounce(value, 500);
 
   useChangeEffect(() => {
-    onChange([fieldCtrl, opCtrl, valueCtrl]);
-  }, [fieldCtrl, opCtrl, valueCtrl]);
+    onChange([field, op, debouncedValue]);
+  }, [field, op, debouncedValue]);
 
   return (
     <Grid container spacing={1} alignItems="center">
       <Grid item>
-        <ConditionField value={fieldCtrl} onChange={setFieldCtrl} />
+        <ConditionField value={field} onChange={setField} />
       </Grid>
       <Grid item>
-        <ConditionOperation value={opCtrl} onChange={setOpCtrl} />
+        <ConditionOperation value={op} onChange={setOp} />
       </Grid>
       <Grid item>
-        <ConditionValue value={valueCtrl} onChange={setValueCtrl} />
+        <ConditionValue value={value} onChange={setValue} />
       </Grid>
       <Grid item>
         <IconButton onClick={onRemove} size="small">
