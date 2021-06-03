@@ -1,4 +1,4 @@
-import { Menu, MenuItem, MenuProps } from '@material-ui/core';
+import { makeStyles, Menu, MenuItem, MenuProps } from '@material-ui/core';
 import React, { ReactText, useCallback, useState } from 'react';
 import useChangeEffect from '../../hooks/useChangeEffect';
 import DropdownButton from './DropdownButton';
@@ -20,6 +20,8 @@ const Dropdown = <T,>({
   itemFormatter,
   onSelect,
 }: DropdownProps<T>) => {
+  const classes = useStyles();
+
   const [anchor, setAnchor] = useState<MenuProps['anchorEl']>(null);
 
   const getValueExpr = useCallback(
@@ -55,7 +57,20 @@ const Dropdown = <T,>({
       <DropdownButton onToggle={handleOpen}>
         {valueFormatter?.(selectedItem) || getValueExpr(selectedItem)}
       </DropdownButton>
-      <Menu keepMounted anchorEl={anchor} open={!!anchor} onClose={handleClose}>
+      <Menu
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        elevation={1}
+        anchorEl={anchor}
+        getContentAnchorEl={null}
+        open={!!anchor}
+        onClose={handleClose}
+        PaperProps={{
+          className: classes.dropdownPaper,
+        }}
+      >
         {items.map((item) => (
           <MenuItem key={getValueExpr(item)} onClick={() => handleChange(item)}>
             {itemFormatter?.(item) || getValueExpr(item)}
@@ -65,5 +80,15 @@ const Dropdown = <T,>({
     </>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  dropdownPaper: {
+    borderRadius: '2px',
+    backgroundColor: theme.palette.grey['100'],
+    '& .MuiMenu-list': {
+      padding: 0,
+    },
+  },
+}));
 
 export default Dropdown;
