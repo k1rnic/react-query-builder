@@ -1,4 +1,5 @@
 import { Box, Grid, List, ListItem, makeStyles } from '@material-ui/core';
+import cn from 'classnames';
 import React, { FC, useState } from 'react';
 import useArrayKeys from '../../../hooks/useArrayKeys';
 import useChangeEffect from '../../../hooks/useChangeEffect';
@@ -88,16 +89,21 @@ const ConditionGroup: FC<ConditionGroupProps> = ({
   }, [group]);
 
   return (
-    <Box display="flex">
+    <Box display="flex" gridGap={4}>
       <AddCondition
         onConditionAdd={handleConditionAdd}
         onConditionGroupAdd={handleGroupAdd}
       />
 
-      <Box display="flex" flexDirection="column" alignItems="flex-start">
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="flex-start"
+        gridGap={2}
+      >
         <Grid
           container
-          className={sharedClasses.removeWrap}
+          className={cn(classes.ctrlWrap, sharedClasses.removeWrap)}
           alignItems="center"
         >
           <Grid item>
@@ -133,11 +139,14 @@ const ConditionGroup: FC<ConditionGroupProps> = ({
 };
 
 const useStyles = makeStyles((theme) => ({
+  ctrlWrap: {
+    gap: theme.spacing(0.5),
+  },
   list: {
     padding: 0,
   },
   listItem: {
-    padding: 0,
+    padding: theme.spacing(0.25, 0),
   },
 }));
 

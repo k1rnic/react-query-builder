@@ -1,6 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { Grid } from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
+import cn from 'classnames';
 import React, { FC, useState } from 'react';
 import useChangeEffect from '../../../hooks/useChangeEffect';
 import useDebounce from '../../../hooks/useDebounce';
@@ -17,7 +18,8 @@ export type ConditionProps = {
 };
 
 const Condition: FC<ConditionProps> = ({ condition, onChange, onRemove }) => {
-  const classes = useSharedStyles();
+  const classes = useStyles();
+  const sharedClasses = useSharedStyles();
   const [field, setField] = useState(condition[0]);
   const [op, setOp] = useState(condition[1]);
   const [value, setValue] = useState(condition[2]);
@@ -29,7 +31,11 @@ const Condition: FC<ConditionProps> = ({ condition, onChange, onRemove }) => {
   }, [field, op, debouncedValue]);
 
   return (
-    <Grid container className={classes.removeWrap} alignItems="center">
+    <Grid
+      container
+      className={cn(classes.root, sharedClasses.removeWrap)}
+      alignItems="center"
+    >
       <Grid item>
         <ConditionField value={field} onChange={setField} />
       </Grid>
@@ -39,11 +45,17 @@ const Condition: FC<ConditionProps> = ({ condition, onChange, onRemove }) => {
       <Grid item>
         <ConditionValue value={value} onChange={setValue} />
       </Grid>
-      <Grid item className={classes.removeCtrl} onClick={onRemove}>
+      <Grid item className={sharedClasses.removeCtrl} onClick={onRemove}>
         <Close fontSize="small" />
       </Grid>
     </Grid>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    gap: theme.spacing(0.5),
+  },
+}));
 
 export default Condition;

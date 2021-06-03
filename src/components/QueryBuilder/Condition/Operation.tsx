@@ -58,7 +58,7 @@ type Props = {
 };
 
 const Operation = ({ value, onChange }: Props) => {
-  const classes = useSharedStyles();
+  const sharedClasses = useSharedStyles();
   const [operations] = useState<ConditionOperationDesc[]>(DEFAULT_OPERATIONS);
 
   const handleChange = ({ value: op }: ConditionOperationDesc) => {
@@ -73,8 +73,8 @@ const Operation = ({ value, onChange }: Props) => {
       valueFormatter={({ icon }) => (
         <span
           className={cn(
-            classes.mathIcon,
-            classes[icon as keyof typeof classes],
+            sharedClasses.mathIcon,
+            sharedClasses[icon as keyof typeof sharedClasses],
           )}
         />
       )}
@@ -82,8 +82,8 @@ const Operation = ({ value, onChange }: Props) => {
         <Box display="flex" gridGap={8}>
           <span
             className={cn(
-              classes.mathIcon,
-              classes[icon as keyof typeof classes],
+              sharedClasses.mathIcon,
+              sharedClasses[icon as keyof typeof sharedClasses],
             )}
           />
           <span>{label}</span>

@@ -26,7 +26,7 @@ const Logic = ({ value, onChange }: Props) => {
       items={LOGIC_LIST}
       selected={value}
       valueExpr="value"
-      itemFormatter={({ label }) => label}
+      itemFormatter={({ label }) => label.toUpperCase()}
       valueFormatter={({ label }) => label}
       onSelect={handleChange}
     />
