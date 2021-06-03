@@ -1,5 +1,6 @@
 import { Box, Grid, List, ListItem } from '@material-ui/core';
 import React, { FC, useState } from 'react';
+import useArrayKeys from '../../../hooks/useArrayKeys';
 import useChangeEffect from '../../../hooks/useChangeEffect';
 import { useQueryProvider } from '../../../providers/QueryProvider';
 import {
@@ -27,6 +28,7 @@ const ConditionGroup: FC<ConditionGroupProps> = ({
   onRemove,
 }) => {
   const { fields } = useQueryProvider();
+  const { getKey, updateKey } = useArrayKeys();
   const [group, setGroup] = useState(query);
 
   const handleGroupAdd = () => {
@@ -57,6 +59,7 @@ const ConditionGroup: FC<ConditionGroupProps> = ({
     targetIdx: number,
     changes: Query | QueryCondition,
   ) => {
+    updateKey(query.conditions[targetIdx], changes);
     setGroup((state) => ({
       ...state,
       conditions: state.conditions.map((condition, idx) =>
@@ -99,7 +102,7 @@ const ConditionGroup: FC<ConditionGroupProps> = ({
 
         <List>
           {group.conditions.map((condition, idx) => (
-            <ListItem key={idx}>
+            <ListItem key={getKey(condition)}>
               {(condition as Query)?.logic ? (
                 <ConditionGroup
                   query={condition as Query}
