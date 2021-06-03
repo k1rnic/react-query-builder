@@ -1,4 +1,4 @@
-import { Close } from '@material-ui/icons';
+import { Add, Close } from '@material-ui/icons';
 import React from 'react';
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
 };
 
 const RemoveCondition = ({ hidden, onRemove }: Props) => (
-  <>{!hidden && <Close fontSize="small" onClick={onRemove} />}</>
+  <>{!hidden && <Add fontSize="small" onClick={onRemove} />}</>
 );
 
 export default RemoveCondition;

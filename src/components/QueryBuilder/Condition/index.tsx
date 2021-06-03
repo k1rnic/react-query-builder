@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { Grid, makeStyles } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { Add } from '@material-ui/icons';
 import cn from 'classnames';
 import React, { FC, useState } from 'react';
 import useChangeEffect from '../../../hooks/useChangeEffect';
@@ -46,7 +46,7 @@ const Condition: FC<ConditionProps> = ({ condition, onChange, onRemove }) => {
         <ConditionValue value={value} onChange={setValue} />
       </Grid>
       <Grid item className={sharedClasses.removeCtrl} onClick={onRemove}>
-        <Close fontSize="small" />
+        <Add fontSize="small" />
       </Grid>
     </Grid>
   );

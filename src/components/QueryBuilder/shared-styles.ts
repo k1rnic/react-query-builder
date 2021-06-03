@@ -3,10 +3,17 @@ import { makeStyles } from '@material-ui/core';
 export default makeStyles((theme) => ({
   removeWrap: {
     '& $removeCtrl': {
-      opacity: 0,
+      background: 'none',
+      '& svg': {
+        opacity: 0,
+      },
     },
     '&:hover $removeCtrl': {
-      opacity: 1,
+      backgroundColor: '#ffedeb',
+      '& svg': {
+        transform: 'rotate(45deg)',
+        opacity: 1,
+      },
     },
   },
   removeCtrl: {
@@ -15,6 +22,10 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     cursor: 'pointer',
     color: '#F44336',
+    borderRadius: '4px',
+    '&,& svg': {
+      transition: 'all 200ms ease-out 250ms',
+    },
   },
   mathIcon: {
     '&:before': {
