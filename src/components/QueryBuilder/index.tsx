@@ -13,7 +13,7 @@ export type QueryBuilderProps = {
 const QueryBuilder: FC<QueryBuilderProps> = ({ query, fields, onChange }) => {
   return (
     <QueryProvider fields={fields} query={query}>
-      <GroupCondition onChange={onChange} />
+      <GroupCondition root onChange={onChange} />
     </QueryProvider>
   );
 };
