@@ -1,6 +1,6 @@
 import React from 'react';
-import { QueryLogic } from '../../utils/query';
-import Dropdown from '../Dropdown';
+import { QueryLogic } from '../../../utils/query';
+import Dropdown from '../../Dropdown';
 
 type LogicDesc = {
   value: QueryLogic;

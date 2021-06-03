@@ -1,7 +1,7 @@
 import { Menu, MenuItem, MenuProps } from '@material-ui/core';
 import React, { ReactText, useCallback, useState } from 'react';
 import useChangeEffect from '../../hooks/useChangeEffect';
-import DropdownButton from '../DropdownButton';
+import DropdownButton from './DropdownButton';
 
 export type DropdownProps<T = string> = {
   items: T[];
@@ -34,7 +34,7 @@ const Dropdown = <T,>({
   );
 
   const handleChange = (changes: T) => {
-    setSelectedItem(changes);
+    setSelectedItem({ ...changes });
     handleClose();
   };
 
@@ -57,11 +57,7 @@ const Dropdown = <T,>({
       </DropdownButton>
       <Menu keepMounted anchorEl={anchor} open={!!anchor} onClose={handleClose}>
         {items.map((item) => (
-          <MenuItem
-            key={getValueExpr(item)}
-            selected={getValueExpr(item) === getValueExpr(selectedItem)}
-            onClick={() => handleChange(item)}
-          >
+          <MenuItem key={getValueExpr(item)} onClick={() => handleChange(item)}>
             {itemFormatter?.(item) || getValueExpr(item)}
           </MenuItem>
         ))}

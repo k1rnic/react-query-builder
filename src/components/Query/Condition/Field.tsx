@@ -1,7 +1,7 @@
 import React from 'react';
-import { IQueryField } from '../../interfaces/query-field';
-import { useQueryProvider } from '../../providers/QueryProvider';
-import Dropdown from '../Dropdown';
+import { IQueryField } from '../../../interfaces/query-field';
+import { useQueryProvider } from '../../../providers/QueryProvider';
+import Dropdown from '../../Dropdown';
 
 type Props = {
   value: string;

@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { IQueryField } from '../../interfaces/query-field';
-import QueryProvider from '../../providers/QueryProvider';
-import { Query, QueryLogic } from '../../utils/query';
-import GroupCondition from '../GroupCondition';
+import { IQueryField } from '../../../interfaces/query-field';
+import QueryProvider from '../../../providers/QueryProvider';
+import { Query, QueryLogic } from '../../../utils/query';
+import ConditionGroup from '../ConditionGroup';
 
 export type QueryBuilderProps = {
   query: Query;
@@ -13,7 +13,7 @@ export type QueryBuilderProps = {
 const QueryBuilder: FC<QueryBuilderProps> = ({ query, fields, onChange }) => {
   return (
     <QueryProvider fields={fields}>
-      <GroupCondition root query={query} onChange={onChange} />
+      <ConditionGroup root query={query} onChange={onChange} />
     </QueryProvider>
   );
 };

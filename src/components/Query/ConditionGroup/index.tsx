@@ -1,26 +1,26 @@
 import { Box, Grid, List, ListItem } from '@material-ui/core';
 import React, { FC, useState } from 'react';
-import useChangeEffect from '../../hooks/useChangeEffect';
-import { useQueryProvider } from '../../providers/QueryProvider';
+import useChangeEffect from '../../../hooks/useChangeEffect';
+import { useQueryProvider } from '../../../providers/QueryProvider';
 import {
   Query,
   QueryCondition,
   QueryLogic,
   QueryOperation,
-} from '../../utils/query';
-import SimpleCondition from '../SimpleCondition';
+} from '../../../utils/query';
+import Condition from '../Condition';
 import AddCondition from './AddCondition';
 import Logic from './Logic';
 import RemoveCondition from './RemoveCondition';
 
-export type GroupConditionProps = {
+export type ConditionGroupProps = {
   root?: boolean;
   query: Query;
   onChange: (query: Query) => void;
   onRemove?: (query: Query) => void;
 };
 
-const GroupCondition: FC<GroupConditionProps> = ({
+const ConditionGroup: FC<ConditionGroupProps> = ({
   query,
   root = false,
   onChange,
@@ -101,13 +101,13 @@ const GroupCondition: FC<GroupConditionProps> = ({
           {group.conditions.map((condition, idx) => (
             <ListItem key={idx}>
               {(condition as Query)?.logic ? (
-                <GroupCondition
+                <ConditionGroup
                   query={condition as Query}
                   onChange={(changes) => handleChildChange(idx, changes)}
                   onRemove={() => handleChildRemove(idx)}
                 />
               ) : (
-                <SimpleCondition
+                <Condition
                   condition={condition as QueryCondition}
                   onChange={(changes) => handleChildChange(idx, changes)}
                   onRemove={() => handleChildRemove(idx)}
@@ -121,4 +121,4 @@ const GroupCondition: FC<GroupConditionProps> = ({
   );
 };
 
-export default GroupCondition;
+export default ConditionGroup;

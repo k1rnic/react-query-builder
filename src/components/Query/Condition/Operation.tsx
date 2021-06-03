@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { QueryFieldType } from '../../interfaces/query-field';
-import { QueryOperation } from '../../utils/query';
-import Dropdown from '../Dropdown';
+import { QueryFieldType } from '../../../interfaces/query-field';
+import { QueryOperation } from '../../../utils/query';
+import Dropdown from '../../Dropdown';
 
 type ConditionOperationDesc = {
   value: QueryOperation;

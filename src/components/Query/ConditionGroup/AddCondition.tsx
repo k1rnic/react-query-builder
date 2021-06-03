@@ -1,5 +1,5 @@
 import React from 'react';
-import Dropdown from '../Dropdown';
+import Dropdown from '../../Dropdown';
 
 const OPTION_LIST: Array<{ value: 'condition' | 'group'; label: string }> = [
   { value: 'condition', label: 'Add condition' },

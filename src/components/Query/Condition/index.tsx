@@ -2,24 +2,20 @@
 import { Grid, IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import React, { FC, useState } from 'react';
-import useChangeEffect from '../../hooks/useChangeEffect';
-import useDebounce from '../../hooks/useDebounce';
-import { QueryCondition } from '../../utils/query';
+import useChangeEffect from '../../../hooks/useChangeEffect';
+import useDebounce from '../../../hooks/useDebounce';
+import { QueryCondition } from '../../../utils/query';
 import ConditionField from './Field';
 import ConditionOperation from './Operation';
 import ConditionValue from './Value';
 
-export type SimpleConditionProps = {
+export type ConditionProps = {
   condition: QueryCondition;
   onChange: (condition: QueryCondition) => void;
   onRemove: () => void;
 };
 
-const SimpleCondition: FC<SimpleConditionProps> = ({
-  condition,
-  onChange,
-  onRemove,
-}) => {
+const Condition: FC<ConditionProps> = ({ condition, onChange, onRemove }) => {
   const [field, setField] = useState(condition[0]);
   const [op, setOp] = useState(condition[1]);
   const [value, setValue] = useState(condition[2]);
@@ -50,4 +46,4 @@ const SimpleCondition: FC<SimpleConditionProps> = ({
   );
 };
 
-export default SimpleCondition;
+export default Condition;
