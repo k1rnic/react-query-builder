@@ -1,6 +1,8 @@
-import { Box, makeStyles } from '@material-ui/core';
+import { Box } from '@material-ui/core';
+import cn from 'classnames';
 import React from 'react';
 import Dropdown from '../../Dropdown';
+import useStyles from '../shared-styles';
 
 const OPTION_LIST: Array<{ value: 'condition' | 'group'; label: string }> = [
   { value: 'condition', label: 'Add condition' },
@@ -30,21 +32,14 @@ const AddCondition = ({ onConditionAdd, onConditionGroupAdd }: Props) => {
       <Dropdown
         items={OPTION_LIST}
         valueExpr="value"
-        valueFormatter={() => <span className={classes.addIcon} />}
+        valueFormatter={() => (
+          <span className={cn(classes.mathIcon, classes.plus)} />
+        )}
         itemFormatter={({ label }) => label}
         onSelect={handleChange}
       />
     </Box>
   );
 };
-
-const useStyles = makeStyles((theme) => ({
-  addIcon: {
-    '&:before': {
-      content: '"\\f165"',
-      fontFamily: 'MathIcon',
-    },
-  },
-}));
 
 export default AddCondition;

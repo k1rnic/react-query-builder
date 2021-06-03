@@ -1,9 +1,10 @@
-import { Box, makeStyles } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import cn from 'classnames';
 import React, { useState } from 'react';
 import { QueryFieldType } from '../../../interfaces/query-field';
 import { QueryOperation } from '../../../utils/query';
 import Dropdown from '../../Dropdown';
+import useSharedStyles from '../shared-styles';
 
 type ConditionOperationDesc = {
   value: QueryOperation;
@@ -57,7 +58,7 @@ type Props = {
 };
 
 const Operation = ({ value, onChange }: Props) => {
-  const classes = useStyles();
+  const classes = useSharedStyles();
   const [operations] = useState<ConditionOperationDesc[]>(DEFAULT_OPERATIONS);
 
   const handleChange = ({ value: op }: ConditionOperationDesc) => {
@@ -92,43 +93,5 @@ const Operation = ({ value, onChange }: Props) => {
     />
   );
 };
-
-const useStyles = makeStyles((theme) => ({
-  mathIcon: {
-    '&:before': {
-      fontFamily: 'MathIcon',
-    },
-  },
-  eq: {
-    '&:before': {
-      content: '"\\f122"',
-    },
-  },
-  ne: {
-    '&:before': {
-      content: '"\\f140"',
-    },
-  },
-  gt: {
-    '&:before': {
-      content: '"\\f138"',
-    },
-  },
-  gte: {
-    '&:before': {
-      content: '"\\f137"',
-    },
-  },
-  lt: {
-    '&:before': {
-      content: '"\\f13a"',
-    },
-  },
-  lte: {
-    '&:before': {
-      content: '"\\f13b"',
-    },
-  },
-}));
 
 export default Operation;

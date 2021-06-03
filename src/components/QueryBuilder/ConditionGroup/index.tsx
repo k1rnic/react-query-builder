@@ -10,6 +10,7 @@ import {
   QueryOperation,
 } from '../../../utils/query';
 import Condition from '../Condition';
+import useSharedStyles from '../shared-styles';
 import AddCondition from './AddCondition';
 import Logic from './Logic';
 import RemoveCondition from './RemoveCondition';
@@ -28,6 +29,8 @@ const ConditionGroup: FC<ConditionGroupProps> = ({
   onRemove,
 }) => {
   const classes = useStyles();
+  const sharedClasses = useSharedStyles();
+
   const { fields } = useQueryProvider();
   const { getKey, updateKey } = useArrayKeys();
   const [group, setGroup] = useState(query);
@@ -92,11 +95,15 @@ const ConditionGroup: FC<ConditionGroupProps> = ({
       />
 
       <Box display="flex" flexDirection="column" alignItems="flex-start">
-        <Grid container className={classes.groupControls} alignItems="center">
+        <Grid
+          container
+          className={sharedClasses.removeWrap}
+          alignItems="center"
+        >
           <Grid item>
             <Logic value={group.logic} onChange={handleLogicChange} />
           </Grid>
-          <Grid item className={classes.removeWrap}>
+          <Grid item className={sharedClasses.removeCtrl}>
             <RemoveCondition hidden={root} onRemove={handleSelfRemove} />
           </Grid>
         </Grid>
@@ -126,21 +133,6 @@ const ConditionGroup: FC<ConditionGroupProps> = ({
 };
 
 const useStyles = makeStyles((theme) => ({
-  groupControls: {
-    '& $removeWrap': {
-      opacity: 0,
-    },
-    '&:hover $removeWrap': {
-      opacity: 1,
-    },
-  },
-  removeWrap: {
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-    color: '#F44336',
-  },
   list: {
     padding: 0,
   },
