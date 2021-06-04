@@ -7,7 +7,7 @@ type Props = {
 };
 
 const RemoveCondition = ({ hidden, onRemove }: Props) => (
-  <>{!hidden && <Add fontSize="small" onClick={onRemove} />}</>
+  <>{!hidden && <Add onClick={onRemove} />}</>
 );
 
 export default RemoveCondition;

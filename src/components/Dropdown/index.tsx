@@ -1,5 +1,5 @@
 import { makeStyles, Menu, MenuItem, MenuProps } from '@material-ui/core';
-import React, { ReactText, useCallback, useState } from 'react';
+import React, { HTMLProps, ReactText, useCallback, useState } from 'react';
 import useChangeEffect from '../../hooks/useChangeEffect';
 import DropdownButton from './DropdownButton';
 
@@ -7,6 +7,7 @@ export type DropdownProps<T = string> = {
   items: T[];
   selected?: T | ReactText;
   valueExpr?: keyof T;
+  buttonProps?: HTMLProps<HTMLButtonElement>;
   itemFormatter?: (item: T) => any;
   valueFormatter?: (item: T) => any;
   onSelect: (item: T) => void;
@@ -16,6 +17,7 @@ const Dropdown = <T,>({
   items,
   selected,
   valueExpr,
+  buttonProps = {},
   valueFormatter,
   itemFormatter,
   onSelect,
@@ -54,7 +56,7 @@ const Dropdown = <T,>({
 
   return (
     <>
-      <DropdownButton onToggle={handleOpen}>
+      <DropdownButton {...buttonProps} onToggle={handleOpen}>
         {valueFormatter?.(selectedItem) || getValueExpr(selectedItem)}
       </DropdownButton>
       <Menu
@@ -87,6 +89,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.grey['100'],
     '& .MuiMenu-list': {
       padding: 0,
+      '& li': {
+        fontSize: theme.spacing(1.85),
+      },
     },
   },
 }));

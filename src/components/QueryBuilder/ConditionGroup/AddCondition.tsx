@@ -1,8 +1,8 @@
-import { Box } from '@material-ui/core';
+import { Box, makeStyles } from '@material-ui/core';
 import cn from 'classnames';
 import React from 'react';
 import Dropdown from '../../Dropdown';
-import useStyles from '../shared-styles';
+import useSharedStyles from '../shared-styles';
 
 const OPTION_LIST: Array<{ value: 'condition' | 'group'; label: string }> = [
   { value: 'condition', label: 'Add condition' },
@@ -16,6 +16,7 @@ type Props = {
 
 const AddCondition = ({ onConditionAdd, onConditionGroupAdd }: Props) => {
   const classes = useStyles();
+  const sharedClasses = useSharedStyles();
   const handleChange = ({ value }: { value: 'condition' | 'group' }) => {
     switch (value) {
       case 'condition':
@@ -32,8 +33,9 @@ const AddCondition = ({ onConditionAdd, onConditionGroupAdd }: Props) => {
       <Dropdown
         items={OPTION_LIST}
         valueExpr="value"
+        buttonProps={{ className: classes.dropdownButton }}
         valueFormatter={() => (
-          <span className={cn(classes.mathIcon, classes.plus)} />
+          <span className={cn(sharedClasses.mathIcon, sharedClasses.plus)} />
         )}
         itemFormatter={({ label }) => label}
         onSelect={handleChange}
@@ -41,5 +43,14 @@ const AddCondition = ({ onConditionAdd, onConditionGroupAdd }: Props) => {
     </Box>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  dropdownButton: {
+    color: '#008CAC',
+    '&:hover': {
+      backgroundColor: '#b3e6f9',
+    },
+  },
+}));
 
 export default AddCondition;

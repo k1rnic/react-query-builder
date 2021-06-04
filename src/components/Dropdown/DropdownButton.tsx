@@ -1,15 +1,23 @@
 import { Button, makeStyles } from '@material-ui/core';
-import React, { FC } from 'react';
+import cn from 'classnames';
+import React, { FC, HTMLProps } from 'react';
 
-type Props = {
+export type Props = {
   onToggle: (e: any) => void;
 };
 
-const DropdownButton: FC<Props> = ({ children, onToggle }) => {
+const DropdownButton: FC<
+  Props & Pick<HTMLProps<HTMLButtonElement>, 'className' | 'style'>
+> = ({ children, className, style, onToggle }) => {
   const classes = useStyles();
 
   return (
-    <Button size="small" onClick={onToggle} className={classes.root}>
+    <Button
+      size="small"
+      className={cn(classes.root, className)}
+      style={style}
+      onClick={onToggle}
+    >
       {children}
     </Button>
   );
@@ -17,10 +25,13 @@ const DropdownButton: FC<Props> = ({ children, onToggle }) => {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: 22,
+    height: 24,
     minWidth: 10,
+    borderRadius: '2px',
     padding: theme.spacing(0, 1),
-    backgroundColor: theme.palette.action.selected,
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
   },
 }));
 

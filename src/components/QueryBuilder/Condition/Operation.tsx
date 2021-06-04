@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box, makeStyles } from '@material-ui/core';
 import cn from 'classnames';
 import React, { useState } from 'react';
 import { QueryFieldType } from '../../../interfaces/query-field';
@@ -58,6 +58,7 @@ type Props = {
 };
 
 const Operation = ({ value, onChange }: Props) => {
+  const classes = useStyles();
   const sharedClasses = useSharedStyles();
   const [operations] = useState<ConditionOperationDesc[]>(DEFAULT_OPERATIONS);
 
@@ -70,6 +71,7 @@ const Operation = ({ value, onChange }: Props) => {
       items={operations}
       selected={value}
       valueExpr="value"
+      buttonProps={{ className: classes.dropdownButton }}
       valueFormatter={({ icon }) => (
         <span
           className={cn(
@@ -93,5 +95,15 @@ const Operation = ({ value, onChange }: Props) => {
     />
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  dropdownButton: {
+    color: '#663d0b',
+    backgroundColor: '#fff5e9',
+    '&:hover': {
+      backgroundColor: '#ffddb4',
+    },
+  },
+}));
 
 export default Operation;

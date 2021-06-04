@@ -22,7 +22,7 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     cursor: 'pointer',
     color: '#F44336',
-    borderRadius: '4px',
+    borderRadius: '2px',
     '&,& svg': {
       transition: 'all 200ms ease-out 250ms',
     },

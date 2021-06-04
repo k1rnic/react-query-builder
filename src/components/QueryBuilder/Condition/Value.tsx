@@ -25,8 +25,8 @@ const useStyles = makeStyles((theme) => ({
       content: 'none',
     },
     '& .MuiInput-input': {
-      height: 22,
-      borderRadius: '4px',
+      height: 24,
+      borderRadius: '2px',
       padding: theme.spacing(0, 1),
       backgroundColor: theme.palette.action.selected,
     },

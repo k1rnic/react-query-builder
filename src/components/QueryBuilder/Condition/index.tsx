@@ -46,7 +46,7 @@ const Condition: FC<ConditionProps> = ({ condition, onChange, onRemove }) => {
         <ConditionValue value={value} onChange={setValue} />
       </Grid>
       <Grid item className={sharedClasses.removeCtrl} onClick={onRemove}>
-        <Add fontSize="small" />
+        <Add />
       </Grid>
     </Grid>
   );
