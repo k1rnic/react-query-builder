@@ -4,8 +4,8 @@ export enum QueryLogic {
 }
 
 export enum QueryOperation {
-  Equal = '=',
-  NotEqual = '<>',
+  Equal = '==',
+  NotEqual = '!=',
   GreaterThan = '>',
   GreaterOrEqual = '>=',
   LessThan = '<',

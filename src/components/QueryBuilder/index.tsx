@@ -5,24 +5,24 @@ import { Query, QueryLogic } from '../../utils/query';
 import ConditionGroup from './ConditionGroup';
 
 export type QueryBuilderProps = {
-  query: Query;
+  query?: Query;
   fields: IQueryField[];
   onChange: (query: Query) => void;
 };
 
-const QueryBuilder: FC<QueryBuilderProps> = ({ query, fields, onChange }) => {
+const QueryBuilder: FC<QueryBuilderProps> = ({
+  query = {
+    logic: QueryLogic.And,
+    conditions: [],
+  },
+  fields,
+  onChange,
+}) => {
   return (
     <QueryProvider fields={fields}>
       <ConditionGroup root query={query} onChange={onChange} />
     </QueryProvider>
   );
-};
-
-QueryBuilder.defaultProps = {
-  query: {
-    logic: QueryLogic.And,
-    conditions: [],
-  },
 };
 
 export default QueryBuilder;
