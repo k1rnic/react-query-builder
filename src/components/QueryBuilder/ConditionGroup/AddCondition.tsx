@@ -29,7 +29,7 @@ const AddCondition = ({ onConditionAdd, onConditionGroupAdd }: Props) => {
   };
 
   return (
-    <Box display="flex" flexDirection="column">
+    <Box display="flex" flexDirection="column" className={classes.root}>
       <Dropdown
         items={OPTION_LIST}
         valueExpr="value"
@@ -45,6 +45,15 @@ const AddCondition = ({ onConditionAdd, onConditionGroupAdd }: Props) => {
 };
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    '&:after': {
+      content: '""',
+      borderLeft: '2px solid #008CAC',
+      height: '100%',
+      transform: 'translateX(13.5px)',
+      cursor: 'pointer',
+    },
+  },
   dropdownButton: {
     color: '#008CAC',
     '&:hover': {
