@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
     },
     '& .MuiAutocomplete-input': {
       height: 24,
+      minWidth: 150,
       borderRadius: '2px',
       padding: '0 4px !important',
       backgroundColor: theme.palette.grey['200'],

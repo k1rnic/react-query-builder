@@ -20,11 +20,16 @@ export type ConditionProps = {
 const Condition: FC<ConditionProps> = ({ condition, onChange, onRemove }) => {
   const classes = useStyles();
   const sharedClasses = useSharedStyles();
+
   const [field, setField] = useState(condition[0]);
   const [op, setOp] = useState(condition[1]);
   const [value, setValue] = useState(condition[2]);
 
   const debouncedValue = useDebounce(value, 500);
+
+  useChangeEffect(() => {
+    setValue('');
+  }, [op]);
 
   useChangeEffect(() => {
     onChange([field, op, debouncedValue]);

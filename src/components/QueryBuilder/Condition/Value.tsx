@@ -32,7 +32,7 @@ const Value = ({ value, op, onChange }: Props) => {
         return (
           <TextField
             value={value}
-            className={classes.root}
+            className={classes.textInput}
             onChange={handleChange}
           />
         );
@@ -43,7 +43,7 @@ const Value = ({ value, op, onChange }: Props) => {
 };
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  textInput: {
     '& .MuiInputBase-root:before': {
       content: 'none',
     },

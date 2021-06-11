@@ -66,6 +66,7 @@ type Props = {
 const Operation = ({ value, onChange }: Props) => {
   const classes = useStyles();
   const sharedClasses = useSharedStyles();
+
   const [operations] = useState<ConditionOperationDesc[]>(DEFAULT_OPERATIONS);
 
   const handleChange = ({ value: op }: ConditionOperationDesc) => {
