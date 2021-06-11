@@ -50,6 +50,12 @@ const DEFAULT_OPERATIONS: ConditionOperationDesc[] = [
     dataTypes: ['number'],
     icon: 'lte',
   },
+  {
+    value: QueryOperation.In,
+    label: 'in',
+    dataTypes: ['number', 'text'],
+    icon: 'lte',
+  },
 ];
 
 type Props = {

@@ -10,6 +10,7 @@ export enum QueryOperation {
   GreaterOrEqual = '>=',
   LessThan = '<',
   LessOrEqual = '<=',
+  In = 'in',
 }
 
 export type QueryCondition = [field: string, op: QueryOperation, value: any];

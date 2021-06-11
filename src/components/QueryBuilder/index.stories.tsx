@@ -51,7 +51,7 @@ const TABLE_QUERY: Query = {
   ],
 };
 
-export const WithRequest: Story<QueryBuilderProps> = (args) => {
+export const WithControls: Story<QueryBuilderProps> = (args) => {
   const defaultQuery: Query = {
     logic: QueryLogic.And,
     conditions: [],
