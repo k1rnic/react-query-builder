@@ -54,7 +54,7 @@ const DEFAULT_OPERATIONS: ConditionOperationDesc[] = [
     value: QueryOperation.In,
     label: 'in',
     dataTypes: ['number', 'text'],
-    icon: 'lte',
+    icon: 'in',
   },
 ];
 

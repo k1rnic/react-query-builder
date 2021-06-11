@@ -1,4 +1,11 @@
-import { Box, Grid, List, ListItem, makeStyles } from '@material-ui/core';
+import {
+  Box,
+  Grid,
+  List,
+  ListItem,
+  makeStyles,
+  Slide,
+} from '@material-ui/core';
 import cn from 'classnames';
 import React, { FC, useEffect, useState } from 'react';
 import useArrayKeys from '../../../hooks/useArrayKeys';
@@ -120,21 +127,23 @@ const ConditionGroup: FC<ConditionGroupProps> = ({
 
         <List className={classes.list}>
           {group.conditions.map((condition, idx) => (
-            <ListItem key={getKey(condition)} className={classes.listItem}>
-              {(condition as Query)?.logic ? (
-                <ConditionGroup
-                  query={condition as Query}
-                  onChange={(changes) => handleChildChange(idx, changes)}
-                  onRemove={() => handleChildRemove(idx)}
-                />
-              ) : (
-                <Condition
-                  condition={condition as QueryCondition}
-                  onChange={(changes) => handleChildChange(idx, changes)}
-                  onRemove={() => handleChildRemove(idx)}
-                />
-              )}
-            </ListItem>
+            <Slide key={getKey(condition)} in direction="right">
+              <ListItem className={classes.listItem}>
+                {(condition as Query)?.logic ? (
+                  <ConditionGroup
+                    query={condition as Query}
+                    onChange={(changes) => handleChildChange(idx, changes)}
+                    onRemove={() => handleChildRemove(idx)}
+                  />
+                ) : (
+                  <Condition
+                    condition={condition as QueryCondition}
+                    onChange={(changes) => handleChildChange(idx, changes)}
+                    onRemove={() => handleChildRemove(idx)}
+                  />
+                )}
+              </ListItem>
+            </Slide>
           ))}
         </List>
       </Box>

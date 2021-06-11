@@ -67,4 +67,9 @@ export default makeStyles((theme) => ({
       content: '"\\f165"',
     },
   },
+  in: {
+    '&:before': {
+      content: '"\\f134"',
+    },
+  },
 }));

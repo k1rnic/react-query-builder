@@ -1,6 +1,6 @@
 import { Chip, makeStyles, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import React, { ChangeEvent, useMemo } from 'react';
+import React, { ChangeEvent } from 'react';
 
 export type TagBoxProps = {
   value: string[];
@@ -9,10 +9,6 @@ export type TagBoxProps = {
 
 const TagBox = ({ value = [], onChange }: TagBoxProps) => {
   const classes = useStyles();
-  const arrayValues = useMemo(
-    () => (value instanceof Array ? value : [value]),
-    [value],
-  );
 
   const handleChange = (_: ChangeEvent<{}>, value: (string | string[])[]) => {
     onChange(value as string[]);
@@ -23,7 +19,7 @@ const TagBox = ({ value = [], onChange }: TagBoxProps) => {
       multiple
       freeSolo
       disableClearable
-      value={arrayValues}
+      value={value}
       onChange={handleChange}
       options={[]}
       className={classes.root}

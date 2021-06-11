@@ -1,5 +1,5 @@
 import { makeStyles, TextField } from '@material-ui/core';
-import React, { ChangeEvent, useMemo } from 'react';
+import React, { ChangeEvent, useEffect, useMemo } from 'react';
 import { QueryOperation } from '../../../utils/query';
 import TagBox from '../../TagBox';
 
@@ -11,6 +11,13 @@ type Props = {
 
 const Value = ({ value, op, onChange }: Props) => {
   const classes = useStyles();
+
+  useEffect(() => {
+    if (op === QueryOperation.In && !(value instanceof Array)) {
+      onChange(value ? [value] : []);
+    }
+  }, [value, op]);
+
   const handleChange = ({
     target: { value: changes },
   }: ChangeEvent<HTMLInputElement>) => {
