@@ -1,6 +1,6 @@
 import { Box, Grid, List, ListItem, makeStyles } from '@material-ui/core';
 import cn from 'classnames';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import useArrayKeys from '../../../hooks/useArrayKeys';
 import useChangeEffect from '../../../hooks/useChangeEffect';
 import { useQueryProvider } from '../../../providers/QueryProvider';
@@ -35,6 +35,10 @@ const ConditionGroup: FC<ConditionGroupProps> = ({
   const { fields } = useQueryProvider();
   const { getKey, updateKey } = useArrayKeys();
   const [group, setGroup] = useState(query);
+
+  useEffect(() => {
+    setGroup(query);
+  }, [query]);
 
   const handleGroupAdd = () => {
     setGroup((state) => ({

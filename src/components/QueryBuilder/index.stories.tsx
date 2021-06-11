@@ -1,4 +1,4 @@
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, Grid } from '@material-ui/core';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import { useState } from 'react';
 import Component, { QueryBuilderProps } from '.';
@@ -52,19 +52,18 @@ const TABLE_QUERY: Query = {
 };
 
 export const WithRequest: Story<QueryBuilderProps> = (args) => {
-  const URI =
-    'http://192.168.10.25/back/api/v1/md/parameters/6d0550c7-2665-4027-9e9e-f3d3f1fefc12/table';
-
+  const defaultQuery: Query = {
+    logic: QueryLogic.And,
+    conditions: [],
+  };
   const [query, setQuery] = useState<Query>(TABLE_QUERY);
-  const [data, setData] = useState([]);
 
-  const handleFetch = async () => {
-    const res = await fetch(URI, {
-      method: 'POST',
-      body: JSON.stringify(query),
-    }).then((res) => res.json());
+  const handleApply = () => {
+    console.log(query);
+  };
 
-    setData(res);
+  const handleReset = () => {
+    setQuery(defaultQuery);
   };
 
   return (
@@ -72,12 +71,23 @@ export const WithRequest: Story<QueryBuilderProps> = (args) => {
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
+      alignItems="flex-start"
       gridGap={16}
     >
       <Component query={query} fields={TABLE_FIELDS} onChange={setQuery} />
-      <Button size="small" color="primary" onClick={handleFetch}>
-        fetch
-      </Button>
+
+      <Grid container spacing={1}>
+        <Grid item>
+          <Button size="small" color="secondary" onClick={handleReset}>
+            reset
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button size="small" color="primary" onClick={handleApply}>
+            apply
+          </Button>
+        </Grid>
+      </Grid>
     </Box>
   );
 };
