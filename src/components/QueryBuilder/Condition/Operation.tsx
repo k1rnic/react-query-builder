@@ -1,6 +1,7 @@
 import { Box, makeStyles } from '@material-ui/core';
 import cn from 'classnames';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import useChangeEffect from '../../../hooks/useChangeEffect';
 import { QueryFieldType } from '../../../interfaces/query-field';
 import { QueryOperation } from '../../../utils/query';
 import Dropdown from '../../Dropdown';
@@ -13,61 +14,85 @@ type ConditionOperationDesc = {
   icon: string;
 };
 
-const DEFAULT_OPERATIONS: ConditionOperationDesc[] = [
-  {
-    value: QueryOperation.Equal,
+const OPERATION_DICT: Record<
+  QueryOperation,
+  Omit<ConditionOperationDesc, 'value'>
+> = {
+  [QueryOperation.Equal]: {
     label: 'equals',
     dataTypes: ['text', 'number'],
     icon: 'eq',
   },
-  {
-    value: QueryOperation.NotEqual,
+  [QueryOperation.NotEqual]: {
     label: 'not equals',
     dataTypes: ['text', 'number'],
     icon: 'ne',
   },
-  {
-    value: QueryOperation.GreaterThan,
+  [QueryOperation.GreaterThan]: {
     label: 'greater than',
     dataTypes: ['number'],
     icon: 'gt',
   },
-  {
-    value: QueryOperation.GreaterOrEqual,
+  [QueryOperation.GreaterOrEqual]: {
     label: 'greater or equals',
     dataTypes: ['number'],
     icon: 'gte',
   },
-  {
-    value: QueryOperation.LessThan,
+  [QueryOperation.LessThan]: {
     label: 'less than',
     dataTypes: ['number'],
     icon: 'lt',
   },
-  {
-    value: QueryOperation.LessOrEqual,
+  [QueryOperation.LessOrEqual]: {
     label: 'less or equals',
     dataTypes: ['number'],
     icon: 'lte',
   },
-  {
-    value: QueryOperation.In,
+  [QueryOperation.In]: {
     label: 'in',
     dataTypes: ['number', 'text'],
     icon: 'in',
   },
-];
+};
+
+const OPERATION_LIST: ConditionOperationDesc[] = Object.keys(
+  OPERATION_DICT,
+).map(
+  (key): ConditionOperationDesc => ({
+    value: key as QueryOperation,
+    ...OPERATION_DICT[key as QueryOperation],
+  }),
+);
 
 type Props = {
   value: QueryOperation;
+  dataType: QueryFieldType;
   onChange: (value: QueryOperation) => void;
 };
 
-const Operation = ({ value, onChange }: Props) => {
+const ConditionOperation = ({ value, dataType, onChange }: Props) => {
   const classes = useStyles();
   const sharedClasses = useSharedStyles();
 
-  const [operations] = useState<ConditionOperationDesc[]>(DEFAULT_OPERATIONS);
+  const [operations, setOperations] = useState<ConditionOperationDesc[]>(
+    OPERATION_LIST,
+  );
+
+  const getOperationsByType = useCallback(
+    (type: QueryFieldType) =>
+      OPERATION_LIST.filter(({ dataTypes }) => dataTypes.includes(type)),
+    [],
+  );
+
+  useEffect(() => {
+    setOperations(getOperationsByType(dataType));
+  }, [dataType, getOperationsByType]);
+
+  useChangeEffect(() => {
+    if (!OPERATION_DICT[value].dataTypes.includes(dataType)) {
+      onChange(operations[0]?.value);
+    }
+  }, [dataType, operations]);
 
   const handleChange = ({ value: op }: ConditionOperationDesc) => {
     onChange(op);
@@ -79,7 +104,7 @@ const Operation = ({ value, onChange }: Props) => {
       selected={value}
       valueExpr="value"
       buttonProps={{ className: classes.dropdownButton }}
-      valueFormatter={({ icon }) => (
+      valueFormatter={({ icon }: ConditionOperationDesc) => (
         <span
           className={cn(
             sharedClasses.mathIcon,
@@ -113,4 +138,4 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default Operation;
+export default ConditionOperation;

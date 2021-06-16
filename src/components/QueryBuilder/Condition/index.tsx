@@ -2,9 +2,11 @@
 import { Grid, makeStyles } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import cn from 'classnames';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import useChangeEffect from '../../../hooks/useChangeEffect';
 import useDebounce from '../../../hooks/useDebounce';
+import { QueryFieldType } from '../../../interfaces/query-field';
+import { useQueryProvider } from '../../../providers/QueryProvider';
 import { QueryCondition } from '../../../utils/query';
 import useSharedStyles from '../shared-styles';
 import ConditionField from './Field';
@@ -21,6 +23,9 @@ const Condition: FC<ConditionProps> = ({ condition, onChange, onRemove }) => {
   const classes = useStyles();
   const sharedClasses = useSharedStyles();
 
+  const { fields } = useQueryProvider();
+
+  const [dataType, setDataType] = useState<QueryFieldType>();
   const [field, setField] = useState(condition[0]);
   const [op, setOp] = useState(condition[1]);
   const [value, setValue] = useState(condition[2]);
@@ -30,6 +35,10 @@ const Condition: FC<ConditionProps> = ({ condition, onChange, onRemove }) => {
   useChangeEffect(() => {
     setValue('');
   }, [op]);
+
+  useEffect(() => {
+    setDataType(fields.find(({ dataField }) => dataField === field)!.dataType);
+  }, [field]);
 
   useChangeEffect(() => {
     onChange([field, op, debouncedValue]);
@@ -45,7 +54,7 @@ const Condition: FC<ConditionProps> = ({ condition, onChange, onRemove }) => {
         <ConditionField value={field} onChange={setField} />
       </Grid>
       <Grid item>
-        <ConditionOperation value={op} onChange={setOp} />
+        <ConditionOperation value={op} dataType={dataType!} onChange={setOp} />
       </Grid>
       <Grid item>
         <ConditionValue value={value} op={op} onChange={setValue} />

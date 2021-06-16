@@ -31,7 +31,7 @@ const TABLE_FIELDS: IQueryField[] = [
   },
   {
     dataField: 'num_specimen_seen',
-    dataType: 'number',
+    dataType: 'text',
     label: 'specimen',
   },
 ];

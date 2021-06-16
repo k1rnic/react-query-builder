@@ -23,17 +23,18 @@ const TagBox = ({ value = [], onChange }: TagBoxProps) => {
       onChange={handleChange}
       options={[]}
       className={classes.root}
-      renderTags={(value, getTagProps) =>
-        value.map((option, index) => (
-          <Chip
-            key={index}
-            label={option}
-            {...getTagProps({ index })}
-            style={{ borderRadius: '2px' }}
-            size="small"
-            color="primary"
-          />
-        ))
+      renderTags={
+        (tags, getTagProps) =>
+          tags.map?.((option, index) => (
+            <Chip
+              key={index}
+              label={option}
+              {...getTagProps({ index })}
+              style={{ borderRadius: '2px' }}
+              size="small"
+              color="primary"
+            />
+          ))
       }
       renderInput={(params) => (
         <TextField {...params} className={classes.input} />

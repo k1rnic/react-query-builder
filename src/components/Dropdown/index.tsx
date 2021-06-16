@@ -1,6 +1,11 @@
 import { makeStyles, Menu, MenuItem, MenuProps } from '@material-ui/core';
-import React, { HTMLProps, ReactText, useCallback, useState } from 'react';
-import useChangeEffect from '../../hooks/useChangeEffect';
+import React, {
+  HTMLProps,
+  ReactText,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 import DropdownButton from './DropdownButton';
 
 export type DropdownProps<T = string> = {
@@ -31,14 +36,16 @@ const Dropdown = <T,>({
     [],
   );
 
-  const [selectedItem, setSelectedItem] = useState<T>(
-    items.find(
-      (item) => getValueExpr(item) === getValueExpr(selected as T),
-    ) as T,
+  const selectedItem = useMemo<T>(
+    () =>
+      items.find(
+        (item) => getValueExpr(item) === getValueExpr(selected as T),
+      ) as T,
+    [selected],
   );
 
   const handleChange = (changes: T) => {
-    setSelectedItem({ ...changes });
+    onSelect(changes);
     handleClose();
   };
 
@@ -49,10 +56,6 @@ const Dropdown = <T,>({
   const handleClose = () => {
     setAnchor(null);
   };
-
-  useChangeEffect(() => {
-    onSelect(selectedItem);
-  }, [selectedItem]);
 
   return (
     <>
